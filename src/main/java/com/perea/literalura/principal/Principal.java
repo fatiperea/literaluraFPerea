@@ -3,6 +3,7 @@ package com.perea.literalura.principal;
 import com.perea.literalura.model.Datos;
 import com.perea.literalura.model.DatosAutor;
 import com.perea.literalura.model.DatosLibro;
+import com.perea.literalura.repository.LibroRepository;
 import com.perea.literalura.service.ConsumoAPI;
 import com.perea.literalura.service.ConvertirDatos;
 
@@ -28,6 +29,13 @@ public class Principal {
     private List<DatosAutor> datosAutor= new ArrayList<>();
 
     private DatosAutor autor;
+
+    private LibroRepository repositorio;
+
+    public Principal(LibroRepository libroRepository) {
+
+        this.repositorio=libroRepository;
+    }
 
     public void menu() {
         var opcion = -1;
