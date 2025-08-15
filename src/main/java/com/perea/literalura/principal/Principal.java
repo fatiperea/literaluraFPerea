@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import static org.springframework.boot.SpringApplication.exit;
+
 public class Principal {
 
     private static final String URL_BASE = "https://gutendex.com/books/";
@@ -65,15 +67,39 @@ public class Principal {
 
     private DatosLibro getDatosLibro(){
 
-        System.out.println("Ingrese el nombre del libro:");
+        System.out.println("Ingrese el título del libro:");
         var tituloLibro = teclado.nextLine();
 
         if (tituloLibro.isEmpty() || tituloLibro.length() < 3) {
             System.out.println("El título ingresado es inválido.");
-            return null;
+            getDatosLibro();
+        }else {
+
+            var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
+            var datosBusqueda = conversor.obtenerDatos(json, Datos.class);
+
+            if (datosBusqueda.resultados() == null || datosBusqueda.resultados().isEmpty()) {
+                System.out.println("No se lograron resultados");
+                //exit();
+            }
+
+            Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
+                    .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
+                    .findFirst();
+
+            if(libroBuscado.isPresent() && libroBuscado != null){
+                System.out.println("Libro Encontrado!");
+                libro=libroBuscado.get();
+                datosLibro.add(libro);
+                System.out.println("Datos del libro: " + libro);
+
+            }else {
+                System.out.println("Libro no encontrado!");
+            }
+
         }
 
-        var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
+        /*var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
         var datosBusqueda = conversor.obtenerDatos(json, Datos.class);
 
         if (datosBusqueda.resultados() == null || datosBusqueda.resultados().isEmpty()) {
@@ -90,12 +116,14 @@ public class Principal {
 
         }else {
             System.out.println("Libro no encontrado!");
-        }
+        }*/
         return libro;
     }
 
     private void buscarLibroPorTitulo() {
-        DatosLibro datos = getDatosLibro();
+
+        getDatosLibro();
+        /*DatosLibro datos = getDatosLibro();
         datosLibro.add(libro);
         if (libro != null){
             System.out.println("Datos del libro: " + libro);
