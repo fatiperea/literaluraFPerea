@@ -1,8 +1,13 @@
 package com.perea.literalura.principal;
 
+import com.perea.literalura.model.Datos;
+import com.perea.literalura.model.DatosLibro;
 import com.perea.literalura.service.ConsumoAPI;
 import com.perea.literalura.service.ConvertirDatos;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Principal {
@@ -14,6 +19,8 @@ public class Principal {
     private ConvertirDatos conversor = new ConvertirDatos();
 
     private Scanner teclado = new Scanner(System.in);
+
+    private List<DatosLibro> datosLibro= new ArrayList<>();
 
     public void menu() {
         var opcion = -1;
@@ -52,6 +59,24 @@ public class Principal {
             }
         }
 
+    }
+
+    private DatosLibro getDatosLibro(){
+
+        System.out.println("Ingrese el nombre del libro que desea buscar");
+        var tituloLibro = teclado.nextLine();
+        var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
+        var datosBusqueda = conversor.obtenerDatos(json, Datos.class);
+        Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
+                .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
+                .findFirst();
+        if(libroBuscado.isPresent()){
+            System.out.println("Libro Encontrado ");
+            System.out.println(libroBuscado.get());
+        }else {
+            System.out.println("Libro no encontrado");
+        }
+        return libroBuscado.get();
     }
 
 }
