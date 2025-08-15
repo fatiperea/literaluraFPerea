@@ -71,7 +71,7 @@ public class Principal {
     private DatosLibro getDatosLibro(){
 
         System.out.println("Ingrese el título del libro:");
-        var tituloLibro = teclado.nextLine();
+        var tituloLibro = teclado.nextLine().trim();
 
         if (tituloLibro.isEmpty() || tituloLibro.length() < 3) {
             System.out.println("El título ingresado es inválido.");
@@ -96,58 +96,19 @@ public class Principal {
                 datosLibro.add(libro);
                 System.out.println("Datos del libro: " + libro);
 
-
             }else {
                 System.out.println("Libro no encontrado!");
             }
 
         }
 
-        /*var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
-        var datosBusqueda = conversor.obtenerDatos(json, Datos.class);
-
-        if (datosBusqueda.resultados() == null || datosBusqueda.resultados().isEmpty()) {
-            return null;
-        }
-
-        Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
-                .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
-                .findFirst();
-
-        if(libroBuscado.isPresent()){
-            System.out.println("Libro Encontrado!");
-            libro=libroBuscado.get();
-
-        }else {
-            System.out.println("Libro no encontrado!");
-        }*/
         return libro;
     }
 
     private void buscarLibroPorTitulo() {
 
         getDatosLibro();
-        /*DatosLibro datos = getDatosLibro();
-        datosLibro.add(libro);
-        if (libro != null){
-            System.out.println("Datos del libro: " + libro);
-            datosLibro.add(libro);
-        }/*else {
-            System.out.println("Libro no encontrado");
-        }*/
-        //System.out.println("Datos del libro: ");
-        //System.out.println(datos);
 
-        /*
-        if (libro != null){
-            System.out.println("Libro buscado: " + libro);
-            datosLibro.add(datos);
-        }else {
-
-            System.out.println("Libro no encontrado");
-        }
-         */
-        //datosLibro.add(datos);
     }
 
     private void listarLibros() {

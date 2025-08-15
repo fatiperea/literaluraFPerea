@@ -7,6 +7,7 @@ import com.perea.literalura.model.Libro;
 import com.perea.literalura.repository.AutorRepository;
 import com.perea.literalura.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -29,9 +30,9 @@ public class LibroService {
                 libro.setAutor(autor);
             }
 
-            // Setear otros campos del libro...
             libro.setTitulo(datosLibro.titulo());
-            //libro.setFechaPublicacion(datosLibro.fechaPublicacion());
+            libro.setDescargas(datosLibro.numeroDeDescargas());
+            libro.setIdiomas(datosLibro.idiomas().get(0));
 
             libroRepository.save(libro);
         }
