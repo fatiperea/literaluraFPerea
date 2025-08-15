@@ -17,6 +17,16 @@ public class Libro {
     @ManyToOne
     private Autor autor;
 
+    public Libro(){}
+
+    public Libro(DatosLibro datosLibro) {
+        //this.id = id;
+        this.titulo = datosLibro.titulo();
+        //this.idiomas = datosLibro.idiomas().;
+        this.descargas = datosLibro.numeroDeDescargas();
+        this.autor = autor;
+    }
+
     public Long getId() {
         return id;
     }

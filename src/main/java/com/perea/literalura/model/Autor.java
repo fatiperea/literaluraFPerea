@@ -17,6 +17,16 @@ public class Autor {
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Libro libro;
 
+    public Autor(){}
+
+    //corregir
+    public Autor(String nombre, String nacimiento, String fallecimiento, Libro libro) {
+        this.nombre = nombre;
+        this.nacimiento = nacimiento;
+        this.fallecimiento = fallecimiento;
+        this.libro = libro;
+    }
+
     public Long getId() {
         return id;
     }
