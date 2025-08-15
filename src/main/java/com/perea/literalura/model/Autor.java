@@ -1,11 +1,21 @@
 package com.perea.literalura.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "autores")
 public class Autor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
     private String nombre;
     private String nacimiento;
     private String fallecimiento;
+
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Libro libro;
 
     public Long getId() {
         return id;

@@ -1,12 +1,21 @@
 package com.perea.literalura.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "libros")
 public class Libro {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String titulo;
-    private Autor autor;
     private String idiomas;
     private Double descargas;
+
+    @ManyToOne
+    private Autor autor;
 
     public Long getId() {
         return id;
