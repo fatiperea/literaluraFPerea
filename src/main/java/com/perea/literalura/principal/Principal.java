@@ -1,14 +1,13 @@
 package com.perea.literalura.principal;
 
 import com.perea.literalura.model.Datos;
+import com.perea.literalura.model.DatosAutor;
 import com.perea.literalura.model.DatosLibro;
 import com.perea.literalura.service.ConsumoAPI;
 import com.perea.literalura.service.ConvertirDatos;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.boot.SpringApplication.exit;
 
@@ -25,6 +24,10 @@ public class Principal {
     private List<DatosLibro> datosLibro= new ArrayList<>();
 
     private DatosLibro libro;
+
+    private List<DatosAutor> datosAutor= new ArrayList<>();
+
+    private DatosAutor autor;
 
     public void menu() {
         var opcion = -1;
@@ -52,7 +55,7 @@ public class Principal {
                     listarLibros();
                     break;
                 case 3:
-                    //listarAutores();
+                    listarAutores();
                     break;
 
                 case 0:
@@ -92,6 +95,7 @@ public class Principal {
                 libro=libroBuscado.get();
                 datosLibro.add(libro);
                 System.out.println("Datos del libro: " + libro);
+
 
             }else {
                 System.out.println("Libro no encontrado!");
@@ -153,5 +157,19 @@ public class Principal {
         //repositorioLibro.findAll().forEach(System.out::println);
 
         datosLibro.forEach(System.out::println);
+    }
+
+    private void listarAutores() {
+
+        List<DatosAutor> autores = datosLibro.stream()
+                .map(libro -> libro.autor().isEmpty() ? null : libro.autor().get(0))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        System.out.println("Lista de autores visitados: ");
+
+        autores.forEach(System.out::println);
+
+
     }
 }
