@@ -56,4 +56,14 @@ public class Libro {
     public void setDescargas(Double descargas) {
         this.descargas = descargas;
     }
+
+    @Override
+    public String toString() {
+        return "Libro{" +
+                "titulo='" + titulo + '\'' +
+                ", idiomas='" + idiomas + '\'' +
+                ", descargas=" + descargas +
+                ", autor=" + autor +
+                '}';
+    }
 }

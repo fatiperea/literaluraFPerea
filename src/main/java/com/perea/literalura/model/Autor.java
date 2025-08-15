@@ -48,4 +48,14 @@ public class Autor {
     public void setFallecimiento(String fallecimiento) {
         this.fallecimiento = fallecimiento;
     }
+
+    @Override
+    public String toString() {
+        return "Autor{" +
+                "nombre='" + nombre + '\'' +
+                ", nacimiento='" + nacimiento + '\'' +
+                ", fallecimiento='" + fallecimiento + '\'' +
+                ", libro=" + libro +
+                '}';
+    }
 }
