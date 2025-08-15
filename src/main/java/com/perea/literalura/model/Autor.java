@@ -19,12 +19,12 @@ public class Autor {
 
     public Autor(){}
 
-    //corregir
-    public Autor(String nombre, Integer nacimiento, Integer fallecimiento, Libro libro) {
-        this.nombre = nombre;
-        this.nacimiento = nacimiento;
-        this.fallecimiento = fallecimiento;
-        this.libro = libro;
+    public Autor(DatosAutor datosAutor) {
+
+        this.nombre = datosAutor.nombre();
+        this.nacimiento = datosAutor.fechaDeNacimiento();
+        this.fallecimiento = datosAutor.fechaDeFallecimiento();
+
     }
 
     public Long getId() {

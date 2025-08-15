@@ -22,9 +22,17 @@ public class Libro {
     public Libro(DatosLibro datosLibro) {
 
         this.titulo = datosLibro.titulo();
-        //this.idiomas = datosLibro.idiomas().;
+        if (datosLibro.idiomas() != null && !datosLibro.idiomas().isEmpty()) {
+            this.idiomas = datosLibro.idiomas().get(0);
+        } else {
+            this.idiomas = "desconocido";
+        }
         this.descargas = datosLibro.numeroDeDescargas();
-        this.autor = autor;
+
+        if (datosLibro.autor() != null && !datosLibro.autor().isEmpty()) {
+            DatosAutor datosAutor = datosLibro.autor().get(0);
+            this.autor = new Autor(datosAutor); // suponiendo que Autor tiene un constructor similar
+        }
     }
 
     public Long getId() {
