@@ -11,8 +11,8 @@ public class Autor {
 
     private Long id;
     private String nombre;
-    private String nacimiento;
-    private String fallecimiento;
+    private Integer nacimiento;
+    private Integer fallecimiento;
 
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Libro libro;
@@ -20,7 +20,7 @@ public class Autor {
     public Autor(){}
 
     //corregir
-    public Autor(String nombre, String nacimiento, String fallecimiento, Libro libro) {
+    public Autor(String nombre, Integer nacimiento, Integer fallecimiento, Libro libro) {
         this.nombre = nombre;
         this.nacimiento = nacimiento;
         this.fallecimiento = fallecimiento;
@@ -43,20 +43,28 @@ public class Autor {
         this.nombre = nombre;
     }
 
-    public String getNacimiento() {
+    public Integer getNacimiento() {
         return nacimiento;
     }
 
-    public void setNacimiento(String nacimiento) {
+    public void setNacimiento(Integer nacimiento) {
         this.nacimiento = nacimiento;
     }
 
-    public String getFallecimiento() {
+    public Integer getFallecimiento() {
         return fallecimiento;
     }
 
-    public void setFallecimiento(String fallecimiento) {
+    public void setFallecimiento(Integer fallecimiento) {
         this.fallecimiento = fallecimiento;
+    }
+
+    public Libro getLibro() {
+        return libro;
+    }
+
+    public void setLibro(Libro libro) {
+        this.libro = libro;
     }
 
     @Override

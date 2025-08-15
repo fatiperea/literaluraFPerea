@@ -20,7 +20,7 @@ public class Libro {
     public Libro(){}
 
     public Libro(DatosLibro datosLibro) {
-        //this.id = id;
+
         this.titulo = datosLibro.titulo();
         //this.idiomas = datosLibro.idiomas().;
         this.descargas = datosLibro.numeroDeDescargas();
