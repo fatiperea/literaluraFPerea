@@ -14,7 +14,8 @@ public class Libro {
     private String idiomas;
     private Double descargas;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "autor_id")
     private Autor autor;
 
     public Libro(){}
