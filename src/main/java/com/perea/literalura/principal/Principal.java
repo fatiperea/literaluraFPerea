@@ -22,6 +22,8 @@ public class Principal {
 
     private List<DatosLibro> datosLibro= new ArrayList<>();
 
+    private DatosLibro libro;
+
     public void menu() {
         var opcion = -1;
         System.out.println("Bienvenido a Literalura!");
@@ -63,27 +65,57 @@ public class Principal {
 
     private DatosLibro getDatosLibro(){
 
-        System.out.println("Ingrese el nombre del libro que desea buscar");
+        System.out.println("Ingrese el nombre del libro:");
         var tituloLibro = teclado.nextLine();
+
+        if (tituloLibro.isEmpty() || tituloLibro.length() < 3) {
+            System.out.println("El título ingresado es inválido.");
+            return null;
+        }
+
         var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
         var datosBusqueda = conversor.obtenerDatos(json, Datos.class);
+
+        if (datosBusqueda.resultados() == null || datosBusqueda.resultados().isEmpty()) {
+            return null;
+        }
+
         Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
                 .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
                 .findFirst();
+
         if(libroBuscado.isPresent()){
-            System.out.println("Libro Encontrado ");
-            System.out.println(libroBuscado.get());
+            System.out.println("Libro Encontrado!");
+            libro=libroBuscado.get();
+
         }else {
-            System.out.println("Libro no encontrado");
+            System.out.println("Libro no encontrado!");
         }
-        return libroBuscado.get();
+        return libro;
     }
 
     private void buscarLibroPorTitulo() {
         DatosLibro datos = getDatosLibro();
-        System.out.println("Libro Encontrado ");
-        System.out.println(datos);
-        datosLibro.add(datos);
+        datosLibro.add(libro);
+        if (libro != null){
+            System.out.println("Datos del libro: " + libro);
+            datosLibro.add(libro);
+        }/*else {
+            System.out.println("Libro no encontrado");
+        }*/
+        //System.out.println("Datos del libro: ");
+        //System.out.println(datos);
+
+        /*
+        if (libro != null){
+            System.out.println("Libro buscado: " + libro);
+            datosLibro.add(datos);
+        }else {
+
+            System.out.println("Libro no encontrado");
+        }
+         */
+        //datosLibro.add(datos);
     }
 
     private void listarLibros() {
