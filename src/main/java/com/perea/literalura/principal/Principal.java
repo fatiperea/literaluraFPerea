@@ -42,10 +42,10 @@ public class Principal {
 
             switch (opcion) {
                 case 1:
-                    //buscarLibroPorTitulo();
+                    buscarLibroPorTitulo();
                     break;
                 case 2:
-                    //listarLibros();
+                    listarLibros();
                     break;
                 case 3:
                     //listarAutores();
@@ -79,4 +79,19 @@ public class Principal {
         return libroBuscado.get();
     }
 
+    private void buscarLibroPorTitulo() {
+        DatosLibro datos = getDatosLibro();
+        System.out.println("Libro Encontrado ");
+        System.out.println(datos);
+        datosLibro.add(datos);
+    }
+
+    private void listarLibros() {
+
+        System.out.println("Lista de libros buscados: ");
+
+        //repositorioLibro.findAll().forEach(System.out::println);
+
+        datosLibro.forEach(System.out::println);
+    }
 }
