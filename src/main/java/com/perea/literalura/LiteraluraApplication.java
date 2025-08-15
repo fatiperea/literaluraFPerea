@@ -1,6 +1,7 @@
 package com.perea.literalura;
 
 import com.perea.literalura.principal.Principal;
+import com.perea.literalura.repository.AutorRepository;
 import com.perea.literalura.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +15,9 @@ public class LiteraluraApplication implements CommandLineRunner {
 	@Autowired
 	private LibroRepository libroRepository;
 
+	@Autowired
+	private AutorRepository autorRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(LiteraluraApplication.class, args);
 	}
@@ -21,7 +25,7 @@ public class LiteraluraApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Principal principal= new Principal(libroRepository);
+		Principal principal= new Principal(libroRepository, autorRepository);
 
 		principal.menu();
 

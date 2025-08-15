@@ -1,16 +1,13 @@
 package com.perea.literalura.principal;
 
-import com.perea.literalura.model.Datos;
-import com.perea.literalura.model.DatosAutor;
-import com.perea.literalura.model.DatosLibro;
+import com.perea.literalura.model.*;
+import com.perea.literalura.repository.AutorRepository;
 import com.perea.literalura.repository.LibroRepository;
 import com.perea.literalura.service.ConsumoAPI;
 import com.perea.literalura.service.ConvertirDatos;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.springframework.boot.SpringApplication.exit;
 
 public class Principal {
 
@@ -32,10 +29,15 @@ public class Principal {
 
     private LibroRepository repositorio;
 
-    public Principal(LibroRepository libroRepository) {
+    private AutorRepository autorRepositorio;
+
+    public Principal(LibroRepository libroRepository, AutorRepository autorRepository) {
 
         this.repositorio=libroRepository;
+        this.autorRepositorio=autorRepository;
     }
+
+
 
     public void menu() {
         var opcion = -1;
@@ -100,16 +102,15 @@ public class Principal {
 
             if(libroBuscado.isPresent() && libroBuscado != null){
                 System.out.println("Libro Encontrado!");
-                libro=libroBuscado.get();
-                datosLibro.add(libro);
-                System.out.println("Datos del libro: " + libro);
+                System.out.println("Datos del libro: " + libroBuscado);
+                libro= libroBuscado.get();
 
             }else {
                 System.out.println("Libro no encontrado!");
             }
-
         }
-
+        Libro libroEncontrado= new Libro(libro);
+        repositorio.save(libroEncontrado);
         return libro;
     }
 
@@ -123,9 +124,10 @@ public class Principal {
 
         System.out.println("Lista de libros buscados: ");
 
-        //repositorioLibro.findAll().forEach(System.out::println);
+        List<Libro> libros=repositorio.findAll();
 
-        datosLibro.forEach(System.out::println);
+        libros.forEach(System.out::println);
+
     }
 
     private void listarAutores() {
@@ -138,6 +140,23 @@ public class Principal {
         System.out.println("Lista de autores visitados: ");
 
         autores.forEach(System.out::println);
+
+        autores.forEach(datosAutor -> {
+            System.out.println(datosAutor);
+
+            // Verificamos si el autor ya existe en la base de datos
+
+            Optional<Autor> autorExistente = autorRepositorio.findByNombre(datosAutor.nombre());
+
+            if (autorExistente.isEmpty()) {
+                Autor nuevoAutor = new Autor();
+                nuevoAutor.setNombre(datosAutor.nombre());
+                autorRepositorio.save(nuevoAutor);
+                System.out.println("Autor guardado: " + nuevoAutor.getNombre());
+            } else {
+                System.out.println("Autor ya existe: " + autorExistente.get().getNombre());
+            }
+        });
 
 
     }
