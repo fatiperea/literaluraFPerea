@@ -1,5 +1,7 @@
 package com.perea.literalura.principal;
 
+import com.perea.literalura.exception.LibroDuplicadoException;
+import com.perea.literalura.exception.LibroNoEncontradoException;
 import com.perea.literalura.model.*;
 import com.perea.literalura.repository.AutorRepository;
 import com.perea.literalura.repository.LibroRepository;
@@ -93,12 +95,9 @@ public class Principal {
 
     private void controlDuplicado(String buscado){
 
-        System.out.println("esta duplicado?"+buscado);
-
         Optional<Libro> libroExistente = repositorio.findByTitulo(buscado);
         if (libroExistente.isPresent()) {
-            System.out.println("Libro existente: " + libroExistente.get().getTitulo());
-            return;
+            throw new LibroDuplicadoException("Libro existente: " + libroExistente.get());
         }
     }
 
@@ -120,7 +119,14 @@ public class Principal {
 
             controlDeserializacion(datosBusqueda);
 
-        controlDuplicado(tituloLibro);
+        try {
+            controlDuplicado(tituloLibro);
+        } catch (LibroDuplicadoException | LibroNoEncontradoException e) {
+            System.out.println(e.getMessage());
+            // opcional: permitir reintento o salir
+        }
+
+        //controlDuplicado(tituloLibro);
 
             /*if (datosBusqueda.resultados() == null || datosBusqueda.resultados().isEmpty()) {
                 System.out.println("No se lograron resultados");
@@ -136,7 +142,12 @@ public class Principal {
                     .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
                     .findFirst();
 
+        try {
             libroVacio(libroBuscado);
+        } catch (LibroDuplicadoException | LibroNoEncontradoException e) {
+            System.out.println(e.getMessage());
+            // opcional: permitir reintento o salir
+        }
 
             /*if(libroBuscado.isPresent()){
                 System.out.println("Libro Encontrado!");
@@ -169,8 +180,7 @@ public class Principal {
     private void libroVacio(Optional<DatosLibro> libroBuscado){
 
         if (libroBuscado.isEmpty()) {
-            System.out.println("Resultados erróneos o no coincidentes");
-            return;
+            throw new LibroNoEncontradoException("El título ingresado no coincide con ningún libro de la API.");
         }
     }
 
