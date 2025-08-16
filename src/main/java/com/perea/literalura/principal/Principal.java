@@ -9,7 +9,6 @@ import com.perea.literalura.service.ConsumoAPI;
 import com.perea.literalura.service.ConvertirDatos;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -98,6 +97,7 @@ public class Principal {
         Optional<Libro> libroExistente = repositorio.findByTitulo(buscado);
         if (libroExistente.isPresent()) {
             throw new LibroDuplicadoException("Libro existente: " + libroExistente.get());
+
         }
     }
 
@@ -106,19 +106,6 @@ public class Principal {
         System.out.println("Ingrese el título del libro:");
         String tituloLibro =solicitarTitulo();
 
-        //var tituloLibro = teclado.nextLine().trim();
-
-        //if (tituloLibro.isEmpty() || tituloLibro.length() < 3) {
-          //  System.out.println("El título ingresado es inválido.");
-            //getDatosLibro();
-
-        //}else {
-
-            var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
-            Datos datosBusqueda = conversor.obtenerDatos(json, Datos.class);
-
-            controlDeserializacion(datosBusqueda);
-
         try {
             controlDuplicado(tituloLibro);
         } catch (LibroDuplicadoException | LibroNoEncontradoException e) {
@@ -126,17 +113,10 @@ public class Principal {
             // opcional: permitir reintento o salir
         }
 
-        //controlDuplicado(tituloLibro);
+            var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
+            Datos datosBusqueda = conversor.obtenerDatos(json, Datos.class);
 
-            /*if (datosBusqueda.resultados() == null || datosBusqueda.resultados().isEmpty()) {
-                System.out.println("No se lograron resultados");
-                //exit();
-            }/*else if(repositorio.findByTitulo(tituloLibro).isPresent()){
-
-                DatosLibro datosLibro= datosBusqueda.resultados().get(0);
-                System.out.println("Libro Encontrado(existente)!"+datosLibro);
-
-            }else {*/
+            controlDeserializacion(datosBusqueda);
 
             Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
                     .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
@@ -149,16 +129,6 @@ public class Principal {
             // opcional: permitir reintento o salir
         }
 
-            /*if(libroBuscado.isPresent()){
-                System.out.println("Libro Encontrado!");
-                libro= libroBuscado.get();
-
-            }else {
-                System.out.println("Libro no encontrado!");
-            }*/
-
-       // }
-       // }
         libro= libroBuscado.get();
         /*Libro libroEncontrado= new Libro(libro);
         System.out.println("Datos del libro: " + libroEncontrado);
@@ -172,7 +142,6 @@ public class Principal {
         if (datos.resultados() == null || datos.resultados().isEmpty()) {
             System.out.println("No se lograron resultados");
             return;
-            //exit();
         }
 
     }
@@ -186,7 +155,6 @@ public class Principal {
 
     private void buscarLibroPorTitulo() {
 
-        //String busquedaLibro= libro.titulo();
         DatosLibro datosLibro=getDatosLibro();
         Libro libroEncontrado= new Libro(datosLibro);
         System.out.println("Datos del libro: " + libroEncontrado);
@@ -205,11 +173,6 @@ public class Principal {
     }
 
     private void listarAutores() {
-
-        /*List<DatosAutor> autores = datosLibro.stream()
-                .map(libro -> libro.autor().isEmpty() ? null : libro.autor().get(0))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());*/
 
         System.out.println("Lista de autores visitados: ");
 
