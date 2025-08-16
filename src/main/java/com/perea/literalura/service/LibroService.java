@@ -14,37 +14,28 @@ import java.util.Optional;
 @Service
 public class LibroService {
 
-        @Autowired
-        private AutorRepository autorRepository;
+    @Autowired
+    private AutorRepository autorRepository;
 
-        @Autowired
-        private LibroRepository libroRepository;
+    @Autowired
+    private LibroRepository libroRepository;
 
-        public void controlDuplicados(DatosLibro datosLibro) {
-            String titulo = datosLibro.titulo();
+    /*public void controlDuplicados(DatosLibro datosLibro) {
+        String titulo = datosLibro.titulo();
 
-            if (libroRepository.findByTitulo(titulo).isPresent()) {
-                System.out.println("Libro existente: " + titulo);
-                return;
-            }else {
+        if (libroRepository.findByTitulo(titulo).isPresent()) {
+            System.out.println("Libro existente: " + titulo);
+            return;
+        } else {
 
-                Libro libro = new Libro(datosLibro);
-                libroRepository.save(libro);
+            Libro libro = new Libro(datosLibro);
+            libroRepository.save(libro);
 
-            }
-
-            //Optional<Autor> autorExistente = autorRepository.findByNombre(autorNuevo.getNombre());
-
-            // Si existe, lo usamos en lugar del nuevo
-            //autorExistente.ifPresent(libro::setAutor);
-
-            // Guardar solo el libro
-
-            //System.out.println("✅ Libro guardado: " + libro.getTitulo());
         }
 
+    }*/
 
-
+}
 
     /*public void guardarLibro(DatosLibro datosLibro) {
             Libro libro = new Libro();
@@ -63,12 +54,7 @@ public class LibroService {
             libroRepository.save(libro);
         }
 */
-        private Autor crearAutor(DatosAutor datosAutor) {
-            Optional<Autor> autorExistente = autorRepository.findByNombre(datosAutor.nombre());
 
-            return autorExistente.orElseGet(() -> new Autor(datosAutor));
-        }
-    }
 
 
 

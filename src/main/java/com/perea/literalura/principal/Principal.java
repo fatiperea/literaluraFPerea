@@ -17,15 +17,15 @@ public class Principal {
 
     private ConvertirDatos conversor = new ConvertirDatos();
 
-    private Scanner teclado = new Scanner(System.in);
+    private  Scanner teclado = new Scanner(System.in);
 
-    private List<DatosLibro> datosLibro= new ArrayList<>();
+    //private List<DatosLibro> datosLibro= new ArrayList<>();
 
     private DatosLibro libro;
 
-    private List<DatosAutor> datosAutor= new ArrayList<>();
+    //private List<DatosAutor> datosAutor= new ArrayList<>();
 
-    private DatosAutor autor;
+    //private DatosAutor autor;
 
     private LibroRepository repositorio;
 
@@ -78,46 +78,109 @@ public class Principal {
 
     }
 
+    private String solicitarTitulo() {
+        while (true) {
+
+            String titulo = teclado.nextLine().trim();
+
+            if (titulo.isEmpty() || titulo.length() < 3) {
+                System.out.println("Título inválido. Intente nuevamente.");
+            } else {
+                return titulo;
+            }
+        }
+    }
+
+    private void controlDuplicado(String buscado){
+
+        System.out.println("esta duplicado?"+buscado);
+
+        Optional<Libro> libroExistente = repositorio.findByTitulo(buscado);
+        if (libroExistente.isPresent()) {
+            System.out.println("Libro existente: " + libroExistente.get().getTitulo());
+            return;
+        }
+    }
+
     private DatosLibro getDatosLibro(){
 
         System.out.println("Ingrese el título del libro:");
-        var tituloLibro = teclado.nextLine().trim();
+        String tituloLibro =solicitarTitulo();
 
-        if (tituloLibro.isEmpty() || tituloLibro.length() < 3) {
-            System.out.println("El título ingresado es inválido.");
-            getDatosLibro();
-        }else {
+        //var tituloLibro = teclado.nextLine().trim();
+
+        //if (tituloLibro.isEmpty() || tituloLibro.length() < 3) {
+          //  System.out.println("El título ingresado es inválido.");
+            //getDatosLibro();
+
+        //}else {
 
             var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
-            var datosBusqueda = conversor.obtenerDatos(json, Datos.class);
+            Datos datosBusqueda = conversor.obtenerDatos(json, Datos.class);
 
-            if (datosBusqueda.resultados() == null || datosBusqueda.resultados().isEmpty()) {
+            controlDeserializacion(datosBusqueda);
+
+        controlDuplicado(tituloLibro);
+
+            /*if (datosBusqueda.resultados() == null || datosBusqueda.resultados().isEmpty()) {
                 System.out.println("No se lograron resultados");
                 //exit();
-            }
+            }/*else if(repositorio.findByTitulo(tituloLibro).isPresent()){
+
+                DatosLibro datosLibro= datosBusqueda.resultados().get(0);
+                System.out.println("Libro Encontrado(existente)!"+datosLibro);
+
+            }else {*/
 
             Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
                     .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
                     .findFirst();
 
-            if(libroBuscado.isPresent() && libroBuscado != null){
+            libroVacio(libroBuscado);
+
+            /*if(libroBuscado.isPresent()){
                 System.out.println("Libro Encontrado!");
                 libro= libroBuscado.get();
 
             }else {
                 System.out.println("Libro no encontrado!");
-            }
-        }
-        Libro libroEncontrado= new Libro(libro);
+            }*/
+
+       // }
+       // }
+        libro= libroBuscado.get();
+        /*Libro libroEncontrado= new Libro(libro);
         System.out.println("Datos del libro: " + libroEncontrado);
-        repositorio.save(libroEncontrado);
+        repositorio.save(libroEncontrado);*/
 
         return libro;
     }
 
+    private void controlDeserializacion(Datos datos){
+
+        if (datos.resultados() == null || datos.resultados().isEmpty()) {
+            System.out.println("No se lograron resultados");
+            return;
+            //exit();
+        }
+
+    }
+
+    private void libroVacio(Optional<DatosLibro> libroBuscado){
+
+        if (libroBuscado.isEmpty()) {
+            System.out.println("Resultados erróneos o no coincidentes");
+            return;
+        }
+    }
+
     private void buscarLibroPorTitulo() {
 
-        getDatosLibro();
+        //String busquedaLibro= libro.titulo();
+        DatosLibro datosLibro=getDatosLibro();
+        Libro libroEncontrado= new Libro(datosLibro);
+        System.out.println("Datos del libro: " + libroEncontrado);
+        repositorio.save(libroEncontrado);
 
     }
 
