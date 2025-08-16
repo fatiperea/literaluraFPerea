@@ -20,20 +20,22 @@ public class Libro {
 
     public Libro(){}
 
-    public Libro(DatosLibro datosLibro) {
+    public Libro(DatosLibro libro) {
 
-        this.titulo = datosLibro.titulo();
-        if (datosLibro.idiomas() != null && !datosLibro.idiomas().isEmpty()) {
-            this.idiomas = datosLibro.idiomas().get(0);
+        this.titulo = libro.titulo();
+        if (libro.idiomas() != null && !libro.idiomas().isEmpty()) {
+            this.idiomas = libro.idiomas().get(0);
         } else {
             this.idiomas = "desconocido";
         }
-        this.descargas = datosLibro.numeroDeDescargas();
+        this.descargas = libro.numeroDeDescargas();
 
-        if (datosLibro.autor() != null && !datosLibro.autor().isEmpty()) {
-            DatosAutor datosAutor = datosLibro.autor().get(0);
-            this.autor = new Autor(datosAutor); // suponiendo que Autor tiene un constructor similar
+        if (libro.autor() != null && !libro.autor().isEmpty()) {
+            DatosAutor datosAutor = libro.autor().get(0);
+
+            this.autor = new Autor(datosAutor);
         }
+
     }
 
     public Long getId() {
@@ -78,11 +80,10 @@ public class Libro {
 
     @Override
     public String toString() {
-        return "Libro{" +
+        return
                 "titulo='" + titulo + '\'' +
                 ", idiomas='" + idiomas + '\'' +
                 ", descargas=" + descargas +
-                ", autor=" + autor +
-                '}';
+                ", autor=" + autor ;
     }
 }

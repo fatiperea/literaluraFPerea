@@ -2,6 +2,10 @@ package com.perea.literalura.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Entity
 @Table(name = "autores")
 public class Autor {
@@ -15,7 +19,7 @@ public class Autor {
     private Integer fallecimiento;
 
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Libro libro;
+    private List<Libro> libros = new ArrayList<>();
 
     public Autor(){}
 
@@ -59,21 +63,20 @@ public class Autor {
         this.fallecimiento = fallecimiento;
     }
 
-    public Libro getLibro() {
-        return libro;
+    public List<Libro> getLibros() {
+        return libros;
     }
 
-    public void setLibro(Libro libro) {
-        this.libro = libro;
+    public void setLibros(List<Libro> libros) {
+        this.libros = libros;
     }
 
     @Override
     public String toString() {
-        return "Autor{" +
+        return
                 "nombre='" + nombre + '\'' +
-                ", nacimiento='" + nacimiento + '\'' +
-                ", fallecimiento='" + fallecimiento + '\'' +
-                ", libro=" + libro +
-                '}';
+                ", nacimiento=" + nacimiento +
+                ", fallecimiento=" + fallecimiento ;
     }
+
 }

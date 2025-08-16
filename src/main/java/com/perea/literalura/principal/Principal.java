@@ -102,7 +102,6 @@ public class Principal {
 
             if(libroBuscado.isPresent() && libroBuscado != null){
                 System.out.println("Libro Encontrado!");
-                System.out.println("Datos del libro: " + libroBuscado);
                 libro= libroBuscado.get();
 
             }else {
@@ -110,7 +109,9 @@ public class Principal {
             }
         }
         Libro libroEncontrado= new Libro(libro);
+        System.out.println("Datos del libro: " + libroEncontrado);
         repositorio.save(libroEncontrado);
+
         return libro;
     }
 
@@ -132,32 +133,15 @@ public class Principal {
 
     private void listarAutores() {
 
-        List<DatosAutor> autores = datosLibro.stream()
+        /*List<DatosAutor> autores = datosLibro.stream()
                 .map(libro -> libro.autor().isEmpty() ? null : libro.autor().get(0))
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
 
         System.out.println("Lista de autores visitados: ");
 
+        List<Autor> autores = autorRepositorio.findAll();
         autores.forEach(System.out::println);
-
-        autores.forEach(datosAutor -> {
-            System.out.println(datosAutor);
-
-            // Verificamos si el autor ya existe en la base de datos
-
-            Optional<Autor> autorExistente = autorRepositorio.findByNombre(datosAutor.nombre());
-
-            if (autorExistente.isEmpty()) {
-                Autor nuevoAutor = new Autor();
-                nuevoAutor.setNombre(datosAutor.nombre());
-                autorRepositorio.save(nuevoAutor);
-                System.out.println("Autor guardado: " + nuevoAutor.getNombre());
-            } else {
-                System.out.println("Autor ya existe: " + autorExistente.get().getNombre());
-            }
-        });
-
 
     }
 }
