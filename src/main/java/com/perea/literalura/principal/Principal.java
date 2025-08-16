@@ -115,13 +115,20 @@ public class Principal {
             controlDuplicado(tituloLibro);
         } catch (LibroDuplicadoException | LibroNoEncontradoException e) {
             System.out.println(e.getMessage());
-
+            return null;
         }
 
             var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
             Datos datosBusqueda = conversor.obtenerDatos(json, Datos.class);
 
+        try {
             controlDeserializacion(datosBusqueda);
+        } catch (LibroNoEncontradoException e) {
+            System.out.println( e.getMessage());
+            return null;
+        }
+
+            //controlDeserializacion(datosBusqueda);
 
             Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
                     .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
@@ -131,16 +138,12 @@ public class Principal {
             libroVacio(libroBuscado);
         } catch (LibroDuplicadoException | LibroNoEncontradoException e) {
             System.out.println(e.getMessage());
-            // opcional: permitir reintento o salir
+            return null;
         }
 
-        libro= libroBuscado.get();
+        //libro= libroBuscado.get();
 
-        /*Libro libroEncontrado= new Libro(libro);
-        System.out.println("Datos del libro: " + libroEncontrado);
-        repositorio.save(libroEncontrado);*/
-
-        return libro;
+        return libroBuscado.get();
     }
 
     private void controlDeserializacion(Datos datos){
@@ -156,7 +159,6 @@ public class Principal {
 
         if (libroBuscado.isEmpty()) {
             throw new LibroNoEncontradoException("El título ingresado no coincide con ningún libro de la API.");
-
         }
     }
 
@@ -176,11 +178,6 @@ public class Principal {
         List<Libro> libros=repositorio.findAll();
 
         libros.forEach(System.out::println);
-
-        /*System.out.println("idiomas");
-        repositorio.findAll().forEach(libro ->
-        System.out.println("📘 " + libro.getTitulo() + " — Idioma: " + libro.getIdioma()));*/
-
 
     }
 
@@ -238,32 +235,5 @@ public class Principal {
         }
 
     }
-
-
-/*
-private void mostrarAutoresVivosEnAño() {
-    System.out.println("Ingrese el año para buscar autores vivos:");
-    String entrada = teclado.nextLine().trim();
-
-    try {
-        int año = Integer.parseInt(entrada);
-        List<Autor> autores;// = autorService.buscarAutoresVivosEn(año);
-
-        if (autores.isEmpty()) {
-            System.out.println("No se encontraron autores vivos en el año " + año);
-            return;
-        }
-
-        System.out.println("👤 Autores vivos en el año " + año + ":");
-        autores.stream()
-            .map(a -> "• " + a.getNombre() + " (" + a.getNacimiento() + " - " +
-                      (a.getFallecimiento() != null ? a.getFallecimiento() : "actualidad") + ")")
-            .forEach(System.out::println);
-
-    } catch (NumberFormatException e) {
-        System.out.println("Año inválido. Ingrese un número entero.");
-    }
-}
-*/
 
 }
