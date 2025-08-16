@@ -180,4 +180,47 @@ public class Principal {
         autores.forEach(System.out::println);
 
     }
+
+    /*
+    private void mostrarLibrosPorIdioma() {
+    System.out.println("Ingrese el idioma para filtrar libros:");
+    String idioma = teclado.nextLine().trim();
+
+    List<Libro> libros = libroService.buscarLibrosPorIdioma(idioma);
+
+    if (libros.isEmpty()) {
+        System.out.println("❌ No se encontraron libros en el idioma: " + idioma);
+        return;
+    }
+
+    System.out.println("📚 Libros en idioma '" + idioma + "':");
+    libros.stream()
+        .map(libro -> "• " + libro.getTitulo() + " — " + libro.getAutor().getNombre())
+        .forEach(System.out::println);
+}
+private void mostrarAutoresVivosEnAño() {
+    System.out.println("Ingrese el año para buscar autores vivos:");
+    String entrada = teclado.nextLine().trim();
+
+    try {
+        int año = Integer.parseInt(entrada);
+        List<Autor> autores = autorService.buscarAutoresVivosEn(año);
+
+        if (autores.isEmpty()) {
+            System.out.println("❌ No se encontraron autores vivos en el año " + año);
+            return;
+        }
+
+        System.out.println("👤 Autores vivos en el año " + año + ":");
+        autores.stream()
+            .map(a -> "• " + a.getNombre() + " (" + a.getFechaNacimiento() + " - " +
+                      (a.getFechaMuerte() != null ? a.getFechaMuerte() : "actualidad") + ")")
+            .forEach(System.out::println);
+
+    } catch (NumberFormatException e) {
+        System.out.println("⚠️ Año inválido. Ingrese un número entero.");
+    }
+}
+
+     */
 }

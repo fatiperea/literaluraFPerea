@@ -9,6 +9,7 @@ import com.perea.literalura.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,40 +21,12 @@ public class LibroService {
     @Autowired
     private LibroRepository libroRepository;
 
-    /*public void controlDuplicados(DatosLibro datosLibro) {
-        String titulo = datosLibro.titulo();
-
-        if (libroRepository.findByTitulo(titulo).isPresent()) {
-            System.out.println("Libro existente: " + titulo);
-            return;
-        } else {
-
-            Libro libro = new Libro(datosLibro);
-            libroRepository.save(libro);
-
-        }
-
-    }*/
+    public List<Libro> buscarLibrosPorIdioma(String idioma) {
+        return libroRepository.findByIdiomaIgnoreCase(idioma);
+    }
 
 }
 
-    /*public void guardarLibro(DatosLibro datosLibro) {
-            Libro libro = new Libro();
-
-            if (datosLibro.autor() != null && !datosLibro.autor().isEmpty()) {
-                DatosAutor datosAutor = datosLibro.autor().get(0);
-
-                Autor autor = crearAutor(datosAutor);
-                libro.setAutor(autor);
-            }
-
-            libro.setTitulo(datosLibro.titulo());
-            libro.setDescargas(datosLibro.numeroDeDescargas());
-            libro.setIdiomas(datosLibro.idiomas().get(0));
-
-            libroRepository.save(libro);
-        }
-*/
 
 
 
