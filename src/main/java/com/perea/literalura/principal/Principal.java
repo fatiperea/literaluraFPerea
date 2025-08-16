@@ -48,8 +48,8 @@ public class Principal {
                     1 - Buscar libro por título
                     2 - Listar libros
                     3 - Listar autores
-                    4 - Listar autores vivos en determinado año
-                    5 - Listar libros por idioma
+                    4 - Listar libros por idioma
+                    5 - Listar autores vivos en determinado año
                     5 - Top 5
                     
                     0 - Salir
@@ -68,7 +68,12 @@ public class Principal {
                 case 3:
                     listarAutores();
                     break;
-
+                case 4:
+                    listarLibrosPorIdioma();
+                    break;
+                case 5:
+                    listarAutoresVivosPorAnio();
+                    break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
                     break;
@@ -181,23 +186,53 @@ public class Principal {
 
     }
 
-    /*
-    private void mostrarLibrosPorIdioma() {
-    System.out.println("Ingrese el idioma para filtrar libros:");
-    String idioma = teclado.nextLine().trim();
+    private void listarLibrosPorIdioma() {
 
-    List<Libro> libros = libroService.buscarLibrosPorIdioma(idioma);
+        System.out.println("Ingrese el idioma para filtrar libros(es= español, en= english):");
 
-    if (libros.isEmpty()) {
-        System.out.println("❌ No se encontraron libros en el idioma: " + idioma);
-        return;
+            String idioma = teclado.nextLine().trim();
+
+            List<Libro> libros = repositorio.findByIdiomaIgnoreCase(idioma);//libroService.buscarLibrosPorIdioma(idioma);
+
+            if (libros.isEmpty()) {
+                System.out.println("No se encontraron libros en el idioma: " + idioma);
+                return;
+            }
+
+            System.out.println("Libros en idioma '" + idioma + "':");
+            libros.stream()
+                    .map(libro -> "• " + libro.getTitulo() + " — " + libro.getAutor().getNombre())
+                    .forEach(System.out::println);
+
     }
 
-    System.out.println("📚 Libros en idioma '" + idioma + "':");
-    libros.stream()
-        .map(libro -> "• " + libro.getTitulo() + " — " + libro.getAutor().getNombre())
-        .forEach(System.out::println);
-}*/
+    private void listarAutoresVivosPorAnio() {
+
+        System.out.println("Ingrese el año para buscar autores vivos:");
+        String entrada = teclado.nextLine().trim();
+
+        try {
+            int anio = Integer.parseInt(entrada);
+            List<Autor> autores=autorRepositorio.listarAutoresVivosPorAnio(anio);//autorRepositorio.findByNacimientoLessThanEqualAndFallecimientoGreaterThanEqualOrFallecimientoIsNull(anio)
+
+            if (autores.isEmpty()) {
+                System.out.println("No se encontraron autores vivos en el año " + anio);
+                return;
+            }
+
+            System.out.println("Autores vivos en el año " + anio + ":");
+            autores.stream()
+                    .map(a -> "• " + a.getNombre() + " (" + a.getNacimiento() + " - " +
+                            (a.getFallecimiento() != null ? a.getFallecimiento() : "actualidad") + ")")
+                    .forEach(System.out::println);
+
+        } catch (NumberFormatException e) {
+            System.out.println("Año inválido. Ingrese un número entero.");
+        }
+
+    }
+
+
 /*
 private void mostrarAutoresVivosEnAño() {
     System.out.println("Ingrese el año para buscar autores vivos:");
