@@ -102,22 +102,10 @@ public class Principal {
         System.out.println("Ingrese el título del libro:");
         String tituloLibro = solicitarTitulo();
 
-        try {
-            System.out.println("verificando duplicado3");
             controlDuplicado(tituloLibro);
-        } catch (LibroDuplicadoException | LibroNoEncontradoException e) {
-            System.out.println(e.getMessage());
-            solicitarTitulo();
-            return null;
-        }
 
         var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
         Datos datosBusqueda = conversor.obtenerDatos(json, Datos.class);
-
-        /*if (datosBusqueda.resultados().get(0).titulo().equalsIgnoreCase(tituloLibro)){
-            System.out.println("verificando duplicado4");
-            throw new LibroDuplicadoException("Libro existente: "+tituloLibro);
-        }*/
 
         try {
             controlDeserializacion(datosBusqueda);
@@ -156,7 +144,7 @@ public class Principal {
 
     private void buscarLibroPorTitulo() {
 
-        try {
+        /*try {
 
             System.out.println("verificando duplicado1");
 
@@ -170,9 +158,20 @@ public class Principal {
 
         }catch (LibroDuplicadoException | LibroNoEncontradoException e) {
         System.out.println(e.getMessage());
-        return;
+        return;*/
 
-    }
+            try {
+                DatosLibro datos = getDatosLibro(); // ← puede lanzar excepción
+                Libro libro = new Libro(datos);
+                repositorio.save(libro);
+                System.out.println("📘 Libro guardado: " + libro.getTitulo());
+            } catch (LibroDuplicadoException e) {
+                System.out.println(e.getMessage());
+                return; // ← esto es clave: detiene el método y vuelve al menú
+            } catch (LibroNoEncontradoException e) {
+                System.out.println("❌ " + e.getMessage());
+                return;
+            }
 
     }
 
