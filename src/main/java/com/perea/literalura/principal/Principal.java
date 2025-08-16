@@ -77,7 +77,7 @@ public class Principal {
     private String solicitarTitulo() {
         while (true) {
 
-            String titulo = teclado.nextLine().trim();
+            String titulo = teclado.nextLine().trim().toLowerCase();
 
             if (titulo.isEmpty() || titulo.length() < 3) {
                 System.out.println("Título inválido. Intente nuevamente.");
@@ -89,26 +89,35 @@ public class Principal {
 
     private void controlDuplicado(String buscado){
 
-        Optional<Libro> libroExistente = repositorio.findByTitulo(buscado);
+        Optional<Libro> libroExistente = repositorio.findByTituloContainingIgnoreCase(buscado);
         if (libroExistente.isPresent()) {
+            System.out.println("verificando duplicado");
             throw new LibroDuplicadoException("Libro existente: " + libroExistente.get());
+
         }
     }
 
-    private DatosLibro getDatosLibro(){
+    private DatosLibro getDatosLibro() throws LibroDuplicadoException {
 
         System.out.println("Ingrese el título del libro:");
-        String tituloLibro =solicitarTitulo();
+        String tituloLibro = solicitarTitulo();
 
         try {
+            System.out.println("verificando duplicado3");
             controlDuplicado(tituloLibro);
         } catch (LibroDuplicadoException | LibroNoEncontradoException e) {
             System.out.println(e.getMessage());
+            solicitarTitulo();
             return null;
         }
 
         var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
         Datos datosBusqueda = conversor.obtenerDatos(json, Datos.class);
+
+        /*if (datosBusqueda.resultados().get(0).titulo().equalsIgnoreCase(tituloLibro)){
+            System.out.println("verificando duplicado4");
+            throw new LibroDuplicadoException("Libro existente: "+tituloLibro);
+        }*/
 
         try {
             controlDeserializacion(datosBusqueda);
@@ -149,6 +158,8 @@ public class Principal {
 
         try {
 
+            System.out.println("verificando duplicado1");
+
             DatosLibro datosLibro=getDatosLibro();
             if (datosLibro == null) {
                 return;
@@ -159,6 +170,7 @@ public class Principal {
 
         }catch (LibroDuplicadoException | LibroNoEncontradoException e) {
         System.out.println(e.getMessage());
+        return;
 
     }
 
