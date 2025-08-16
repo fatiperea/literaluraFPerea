@@ -20,14 +20,6 @@ public class Principal {
 
     private  Scanner teclado = new Scanner(System.in);
 
-    //private List<DatosLibro> datosLibro= new ArrayList<>();
-
-    private DatosLibro libro;
-
-    //private List<DatosAutor> datosAutor= new ArrayList<>();
-
-    //private DatosAutor autor;
-
     private LibroRepository repositorio;
 
     private AutorRepository autorRepositorio;
@@ -37,8 +29,6 @@ public class Principal {
         this.repositorio=libroRepository;
         this.autorRepositorio=autorRepository;
     }
-
-
 
     public void menu() {
         var opcion = -1;
@@ -102,7 +92,6 @@ public class Principal {
         Optional<Libro> libroExistente = repositorio.findByTitulo(buscado);
         if (libroExistente.isPresent()) {
             throw new LibroDuplicadoException("Libro existente: " + libroExistente.get());
-
         }
     }
 
@@ -118,8 +107,8 @@ public class Principal {
             return null;
         }
 
-            var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
-            Datos datosBusqueda = conversor.obtenerDatos(json, Datos.class);
+        var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
+        Datos datosBusqueda = conversor.obtenerDatos(json, Datos.class);
 
         try {
             controlDeserializacion(datosBusqueda);
@@ -128,11 +117,9 @@ public class Principal {
             return null;
         }
 
-            //controlDeserializacion(datosBusqueda);
-
-            Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
-                    .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
-                    .findFirst();
+        Optional<DatosLibro> libroBuscado = datosBusqueda.resultados().stream()
+                .filter(l -> l.titulo().toUpperCase().contains(tituloLibro.toUpperCase()))
+                .findFirst();
 
         try {
             libroVacio(libroBuscado);
@@ -140,9 +127,6 @@ public class Principal {
             System.out.println(e.getMessage());
             return null;
         }
-
-        //libro= libroBuscado.get();
-
         return libroBuscado.get();
     }
 
@@ -150,7 +134,6 @@ public class Principal {
 
         if (datos.resultados() == null || datos.resultados().isEmpty()) {
             System.out.println("No se lograron resultados");
-            return;
         }
 
     }
@@ -164,10 +147,20 @@ public class Principal {
 
     private void buscarLibroPorTitulo() {
 
-        DatosLibro datosLibro=getDatosLibro();
-        Libro libroEncontrado= new Libro(datosLibro);
-        System.out.println("Datos del libro: " + libroEncontrado);
-        repositorio.save(libroEncontrado);
+        try {
+
+            DatosLibro datosLibro=getDatosLibro();
+            if (datosLibro == null) {
+                return;
+            }
+            Libro libroEncontrado= new Libro(datosLibro);
+            System.out.println("Datos del libro: " + libroEncontrado);
+            repositorio.save(libroEncontrado);
+
+        }catch (LibroDuplicadoException | LibroNoEncontradoException e) {
+        System.out.println(e.getMessage());
+
+    }
 
     }
 

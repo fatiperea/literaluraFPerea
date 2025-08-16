@@ -24,13 +24,11 @@ public class Libro {
 
         this.titulo = libro.titulo();
 
-        System.out.println("Idiomas recibidos: " + libro.idioma());
         if (libro.idioma() != null && !libro.idioma().isEmpty()) {
             this.idioma = libro.idioma().get(0);
         } else {
             this.idioma = "desconocido";
         }
-
 
         this.descargas = libro.numeroDeDescargas();
 
