@@ -144,7 +144,7 @@ public class Principal {
 
     private void buscarLibroPorTitulo() {
 
-        /*try {
+        try {
 
             System.out.println("verificando duplicado1");
 
@@ -158,21 +158,8 @@ public class Principal {
 
         }catch (LibroDuplicadoException | LibroNoEncontradoException e) {
         System.out.println(e.getMessage());
-        return;*/
-
-            try {
-                DatosLibro datos = getDatosLibro(); // ← puede lanzar excepción
-                Libro libro = new Libro(datos);
-                repositorio.save(libro);
-                System.out.println("📘 Libro guardado: " + libro.getTitulo());
-            } catch (LibroDuplicadoException e) {
-                System.out.println(e.getMessage());
-                return; // ← esto es clave: detiene el método y vuelve al menú
-            } catch (LibroNoEncontradoException e) {
-                System.out.println("❌ " + e.getMessage());
-                return;
-            }
-
+        return;
+        }
     }
 
     private void listarLibros() {
@@ -196,7 +183,7 @@ public class Principal {
 
     private void listarLibrosPorIdioma() {
 
-        System.out.println("Ingrese el idioma para filtrar libros:");
+        System.out.println("Ingrese el idioma para filtrar libros (español='es', ingles='en'):");
 
             String idioma = teclado.nextLine().trim();
 
