@@ -8,16 +8,15 @@ Con este proyecto nos conectamos a Gutendex, JSON web API para brindar al usuari
 - Luego de clonar, accede al proyecto y comienza a probar las funcionalidades disponibles, no se requiere contar con una API-KEY en este caso.
 - Asegúrate de contar con los siguientes programas, archivos y versiones:
 
-Java JDK: versión: 17 en adelante -
-Download the Latest Java LTS Free
+- Java JDK: versión: 17 en adelante -
 
-Maven: versión 4 en adelante
+- Maven: versión 4 en adelante
 
-Spring: versión 3.2.3 - https://start.spring.io/
+- Spring: versión 3.2.3 - https://start.spring.io/
 
-Postgres: versión 16 en adelante - PostgreSQL: Downloads
+- Postgres: versión 16 en adelante - 
 
-IDE (Entorno de desenvolvimento integrado) IntelliJ IDEA- opcional -
+- IDE (Entorno de desenvolvimento integrado) IntelliJ IDEA- opcional -
 
 
 ## Autor:
