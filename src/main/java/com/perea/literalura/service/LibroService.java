@@ -18,9 +18,9 @@ public class LibroService {
     @Autowired
     private LibroRepository libroRepository;
 
-    public List<Libro> buscarLibrosPorIdioma(String idioma) {
+    /*public List<Libro> buscarLibrosPorIdioma(String idioma) {
         return libroRepository.findByIdiomaIgnoreCase(idioma);
-    }
+    }*/
 
 }
 

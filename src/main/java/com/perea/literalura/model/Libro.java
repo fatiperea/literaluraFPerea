@@ -11,7 +11,7 @@ public class Libro {
     private Long id;
     @Column(unique = true)
     private String titulo;
-    private String idiomas;
+    private String idioma;
     private Double descargas;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -23,11 +23,15 @@ public class Libro {
     public Libro(DatosLibro libro) {
 
         this.titulo = libro.titulo();
-        if (libro.idiomas() != null && !libro.idiomas().isEmpty()) {
-            this.idiomas = libro.idiomas().get(0);
+
+        System.out.println("Idiomas recibidos: " + libro.idioma());
+        if (libro.idioma() != null && !libro.idioma().isEmpty()) {
+            this.idioma = libro.idioma().get(0);
         } else {
-            this.idiomas = "desconocido";
+            this.idioma = "desconocido";
         }
+
+
         this.descargas = libro.numeroDeDescargas();
 
         if (libro.autor() != null && !libro.autor().isEmpty()) {
@@ -35,7 +39,6 @@ public class Libro {
 
             this.autor = new Autor(datosAutor);
         }
-
     }
 
     public Long getId() {
@@ -62,12 +65,12 @@ public class Libro {
         this.autor = autor;
     }
 
-    public String getIdiomas() {
-        return idiomas;
+    public String getIdioma() {
+        return idioma;
     }
 
-    public void setIdiomas(String idiomas) {
-        this.idiomas = idiomas;
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
     }
 
     public Double getDescargas() {
@@ -82,7 +85,7 @@ public class Libro {
     public String toString() {
         return
                 "titulo='" + titulo + '\'' +
-                ", idiomas='" + idiomas + '\'' +
+                ", idiomas='" + idioma + '\'' +
                 ", descargas=" + descargas +
                 ", autor=" + autor ;
     }

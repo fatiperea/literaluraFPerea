@@ -26,8 +26,8 @@ public class Autor {
     public Autor(DatosAutor datosAutor) {
 
         this.nombre = datosAutor.nombre();
-        this.nacimiento = datosAutor.fechaDeNacimiento();
-        this.fallecimiento = datosAutor.fechaDeFallecimiento();
+        this.nacimiento = datosAutor.nacimiento();
+        this.fallecimiento = datosAutor.fallecimiento();
 
     }
 

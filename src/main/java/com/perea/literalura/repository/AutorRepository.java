@@ -16,13 +16,8 @@ public interface AutorRepository extends JpaRepository<Autor, Long> {
     //List<Autor> findByNacimientoLessThanEqualAndFallecimientoGreaterThanEqualOrFallecimientoIsNull(int nacimiento, int fallecimiento);
 
 
-        @Query("SELECT a FROM Autor a WHERE a.fechaNacimiento <= :año AND (a.fechaMuerte IS NULL OR a.fechaMuerte >= :año)")
+        @Query("SELECT a FROM Autor a WHERE a.nacimiento <= :año AND (a.fallecimiento IS NULL OR a.fallecimiento >= :año)")
         List<Autor> listarAutoresVivosPorAnio(@Param("año") int anio);
 
 
 }
-
-/* agregar en autor service
-}
-
- */

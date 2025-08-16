@@ -50,7 +50,7 @@ public class Principal {
                     3 - Listar autores
                     4 - Listar libros por idioma
                     5 - Listar autores vivos en determinado año
-                    5 - Top 5
+                    6 - Top 5
                     
                     0 - Salir
                     """;
@@ -115,7 +115,7 @@ public class Principal {
             controlDuplicado(tituloLibro);
         } catch (LibroDuplicadoException | LibroNoEncontradoException e) {
             System.out.println(e.getMessage());
-            // opcional: permitir reintento o salir
+
         }
 
             var json = consumoAPI.obtenerDatos(URL_BASE+"?search=" + tituloLibro.replace(" ","+"));
@@ -135,6 +135,7 @@ public class Principal {
         }
 
         libro= libroBuscado.get();
+
         /*Libro libroEncontrado= new Libro(libro);
         System.out.println("Datos del libro: " + libroEncontrado);
         repositorio.save(libroEncontrado);*/
@@ -155,6 +156,7 @@ public class Principal {
 
         if (libroBuscado.isEmpty()) {
             throw new LibroNoEncontradoException("El título ingresado no coincide con ningún libro de la API.");
+
         }
     }
 
@@ -175,6 +177,11 @@ public class Principal {
 
         libros.forEach(System.out::println);
 
+        /*System.out.println("idiomas");
+        repositorio.findAll().forEach(libro ->
+        System.out.println("📘 " + libro.getTitulo() + " — Idioma: " + libro.getIdioma()));*/
+
+
     }
 
     private void listarAutores() {
@@ -188,11 +195,11 @@ public class Principal {
 
     private void listarLibrosPorIdioma() {
 
-        System.out.println("Ingrese el idioma para filtrar libros(es= español, en= english):");
+        System.out.println("Ingrese el idioma para filtrar libros:");
 
             String idioma = teclado.nextLine().trim();
 
-            List<Libro> libros = repositorio.findByIdiomaIgnoreCase(idioma);//libroService.buscarLibrosPorIdioma(idioma);
+            List<Libro> libros = repositorio.findByIdiomaIgnoreCase(idioma);
 
             if (libros.isEmpty()) {
                 System.out.println("No se encontraron libros en el idioma: " + idioma);
