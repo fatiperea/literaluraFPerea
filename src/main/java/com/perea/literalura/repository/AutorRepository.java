@@ -15,8 +15,6 @@ public interface AutorRepository extends JpaRepository<Autor, Long> {
 }
 
 /* agregar en autor service
-public List<Autor> buscarAutoresVivosEn(int año) {
-    return autorRepository.findByFechaNacimientoLessThanEqualAndFechaMuerteGreaterThanEqualOrFechaMuerteIsNull(año, año);
 }
 
  */

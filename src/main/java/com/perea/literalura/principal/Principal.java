@@ -197,30 +197,31 @@ public class Principal {
     libros.stream()
         .map(libro -> "• " + libro.getTitulo() + " — " + libro.getAutor().getNombre())
         .forEach(System.out::println);
-}
+}*/
+/*
 private void mostrarAutoresVivosEnAño() {
     System.out.println("Ingrese el año para buscar autores vivos:");
     String entrada = teclado.nextLine().trim();
 
     try {
         int año = Integer.parseInt(entrada);
-        List<Autor> autores = autorService.buscarAutoresVivosEn(año);
+        List<Autor> autores;// = autorService.buscarAutoresVivosEn(año);
 
         if (autores.isEmpty()) {
-            System.out.println("❌ No se encontraron autores vivos en el año " + año);
+            System.out.println("No se encontraron autores vivos en el año " + año);
             return;
         }
 
         System.out.println("👤 Autores vivos en el año " + año + ":");
         autores.stream()
-            .map(a -> "• " + a.getNombre() + " (" + a.getFechaNacimiento() + " - " +
-                      (a.getFechaMuerte() != null ? a.getFechaMuerte() : "actualidad") + ")")
+            .map(a -> "• " + a.getNombre() + " (" + a.getNacimiento() + " - " +
+                      (a.getFallecimiento() != null ? a.getFallecimiento() : "actualidad") + ")")
             .forEach(System.out::println);
 
     } catch (NumberFormatException e) {
-        System.out.println("⚠️ Año inválido. Ingrese un número entero.");
+        System.out.println("Año inválido. Ingrese un número entero.");
     }
 }
+*/
 
-     */
 }

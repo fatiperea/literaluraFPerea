@@ -16,9 +16,6 @@ import java.util.Optional;
 public class LibroService {
 
     @Autowired
-    private AutorRepository autorRepository;
-
-    @Autowired
     private LibroRepository libroRepository;
 
     public List<Libro> buscarLibrosPorIdioma(String idioma) {
